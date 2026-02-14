@@ -1,0 +1,15 @@
+[package]
+name = "http-client"
+version = "0.1.0-dev"
+edition = "2024"
+
+[lib]
+name = "vss_rust_http_client"
+path = "source/rust/lib.rs"
+crate-type = ["staticlib"]
+
+[dependencies]
+reqwest = { version = "0.13.2", features = ["blocking"] }
+#reqwest = { version = "0.13.2", features = ["blocking", "rustls"] }
+
+vss-rust-interop = { workspace = true }

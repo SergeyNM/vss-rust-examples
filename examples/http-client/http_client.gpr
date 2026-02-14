@@ -1,0 +1,25 @@
+with "../../vss_rust_examples_common.gpr";
+
+project HTTP_Client  is
+
+   for Main use ("http_client.adb");
+   for Source_Dirs use ("source/ada");
+   for Object_Dir use "../../obj/http-client";
+   for Exec_Dir use "../../bin";
+
+   package Linker is
+      --  The order is CRITICAL for GNU Linker (MinGW):
+      --  1. Search Paths
+      --  2. High-level Ada libraries
+      --  3. Specific Rust Example library
+      --  4. Base Rust Interop library
+      --  5. Low-level System libraries
+      for Default_Switches ("Ada") use 
+        Vss_Rust_Examples_Common.Linker.Library_Search_Paths &
+        Vss_Rust_Examples_Common.Linker.Ada_VSS_Rust_Lib &
+        ("-lvss_rust_http_client") &
+        Vss_Rust_Examples_Common.Linker.Interop_Lib &
+        Vss_Rust_Examples_Common.Linker.System_Libs;
+   end Linker;
+
+end HTTP_Client;

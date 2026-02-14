@@ -1,0 +1,11 @@
+aggregate project Vss_Rust_Examples is
+   for Project_Files use (
+      "examples/http-client/http_client.gpr",
+      "examples/http-client-async/http_client_async.gpr",
+      "examples/ip-inspector/ip_inspector.gpr"
+   );
+
+   package Builder is
+      for Switches (others) use ("-j0");
+   end Builder;
+end Vss_Rust_Examples;

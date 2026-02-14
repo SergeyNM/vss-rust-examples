@@ -1,0 +1,13 @@
+[workspace]
+members = [
+    "examples/http-client",
+    "examples/http-client-async",
+    "examples/ip-inspector",
+]
+resolver = "2"
+
+[workspace.dependencies]
+vss-rust-interop = { git = "https://github.com/SergeyNM/vss-rust" }
+
+[patch."https://github.com/SergeyNM/vss-rust"]
+vss-rust-interop = { path = "../vss-rust" }

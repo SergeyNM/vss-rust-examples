@@ -1,0 +1,12 @@
+[package]
+name = "ip-inspector"
+version = "0.1.0-dev"
+edition = "2024"
+
+[lib]
+name = "vss_rust_ip_inspector"
+path = "source/rust/lib.rs"
+crate-type = ["staticlib"]
+
+[dependencies]
+vss-rust-interop = { workspace = true }

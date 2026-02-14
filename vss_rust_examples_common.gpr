@@ -1,0 +1,45 @@
+with "config/vss_rust_examples_config.gpr";
+
+abstract project Vss_Rust_Examples_Common is
+
+   package Linker is
+      --  Mapping Alire Build Profile to Cargo directory name
+      --  Alire: "development" -> Cargo: "debug"
+      --  Alire: "release"     -> Cargo: "release"
+      Cargo_Dir := "";
+      case Vss_Rust_Examples_Config.Build_Profile is
+         when "development" | "validation" =>
+            Cargo_Dir := "debug";
+         when "release" =>
+            Cargo_Dir := "release";
+      end case;
+
+      --  System OS detection
+      System_Libs := ();
+      case Vss_Rust_Examples_Config.Alire_Host_OS is
+         when "windows" =>
+            System_Libs := ("-lwinpthread", "-lws2_32", "-luserenv", "-lntdll", "-lbcrypt");
+         when others =>
+            System_Libs := ("-lpthread", "-ldl", "-lm");
+      end case;
+
+      --  Library Search Paths using the mapped Cargo_Dir
+      Library_Search_Paths := (
+         "-L" & Project'Project_Dir & "target/" & Cargo_Dir,
+         "-L" & Project'Project_Dir & "../vss-rust/target/" & Cargo_Dir,
+         "-L" & Project'Project_Dir & "../vss-rust/lib"
+      );
+
+      Interop_Lib      := ("-lvss_rust_interop");
+      Ada_VSS_Rust_Lib := ("-lvss-rust");
+   end Linker;
+
+   package Compiler is
+      for Default_Switches ("Ada") use Vss_Rust_Examples_Config.Ada_Compiler_Switches;
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-gnatW8", "-Es");
+   end Binder;
+
+end Vss_Rust_Examples_Common;
